@@ -49,12 +49,13 @@ const EditOrdem = () => {
             var body = {
                 id: data[0],
                 detalhes: data[1],
-                valorPecas: data[2],
-                valorServico: data[3],
-                fase: data[4],
-                statusPagamento: data[5],
-                responsavel_id: data[6],
-                tipoServico: data[7]
+                enderecoServico: data[2],
+                valorPecas: data[3],
+                valorServico: data[4],
+                fase: data[5],
+                statusPagamento: data[6],
+                responsavel_id: data[7],
+                tipoServico: data[8]
             }
             setItem(body);
         });
@@ -181,10 +182,10 @@ const EditOrdem = () => {
                             <input id='detalhes' name='detalhes' type='text' value ={item.detalhes} required="required" placeholder="Digite os detalhes da OS" size="80" className="form-control" onChange={(event) => setItem({...item, detalhes: event.target.value})} />
                         </div>
 
-                        <div className="form-group">
-                            <label>Endereço:</label>
-                            <input id='endereco' name='endereco' type='text' value ={item.enderecoServico} required="required" placeholder="Digite o endereço" size="80" className="form-control" onChange={(event) => setItem({...item, enderecoServico: event.target.value})} />
-                        </div>
+                            <div className="form-group">
+                                <label>Endereço:</label>
+                                <input id='endereco' name='endereco' type='text' value={item.enderecoServico} required="required" size="80" className="form-control" onChange={(event) => setItem({...item, enderecoServico: event.target.value})} />
+                            </div>
 
                             <div className="form-group">
                                 <label>Preço das peças:</label>
