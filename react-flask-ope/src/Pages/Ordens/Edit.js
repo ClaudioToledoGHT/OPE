@@ -95,6 +95,8 @@ const EditOrdem = () => {
                 
                 var sum = 0
                 dados.map((a) => (sum += (a.valor_venda * a.Quantidade)))
+                console.log('sum', sum)
+                console.log('sum1', sum)
                 setServicesSum(sum)
             });
           });
@@ -181,7 +183,10 @@ const EditOrdem = () => {
 
                             <div className="form-group">
                                 <label>Preço das peças:</label>
-                                <input id='valorPecas' name='valorPecas' type='number' step="0.01" min="0.01" value={servicesSum} required="required" placeholder="Digite o valor das peças" size="80"  className="form-control" onChange={(event) => setItem({...item, valorPecas: event.target.value})} disabled/>
+                                <input  type='number' step="0.01" min="0" value={servicesSum}  placeholder="Digite o valor das peças" size="80"  className="form-control" onChange={(event) => setItem({...item, valorPecas: event.target.value})} disabled/>
+
+                                <input name="valorPecas" id="valorPecas" type="hidden" size="40" value={servicesSum}/>
+
                             </div>
 
                             <div className="form-group">
@@ -356,7 +361,7 @@ const EditOrdem = () => {
                                                 var itensEstoque = [...estoque];
 
                                                 var sum = 0;
-                                                    sum = estoqueItensUtilizado.map((a) => (sum += a.valor_venda))
+                                                    estoqueItensUtilizado.map((a) => (sum += a.valor_venda))
 
                                                     console.log('sum', sum)
 
@@ -377,7 +382,7 @@ const EditOrdem = () => {
                                                     return materia;
                                                 })
                                                 var sum = 0;
-                                                sum = newList.map((a) => (sum += a.valor_venda * a.Quantidade))
+                                                newList.map((a) => (sum += a.valor_venda * a.Quantidade))
                                                 setServicesSum(sum)
                                                 
                                                 if(!quantidadeInvalida){
@@ -425,7 +430,8 @@ const EditOrdem = () => {
                                                 console.log('2222', estoqueItensUtilizado.reduce((a, b) => (a.valor_venda) + b.valor_venda))
 
                                                     var sum = 0;
-                                                    sum = newList.map((a) => (sum += a.valor_venda * a.Quantidade))
+                                                    console.log('a', newList)
+                                                    newList.map((a) => (sum += a != undefined ? a.valor_venda * a.Quantidade : 0))
                                                     setServicesSum(sum)
 
                                                 return setEstoqueItensUtilizado([...newList.filter(n => n != undefined)])
@@ -487,7 +493,7 @@ const EditOrdem = () => {
 
                     </div>
 
-                    {id != null && <div className="os-materias-primas" style={{maxWidth: '300px'}}>
+                    {id != null && <div className="os-materias-primas" style={{maxWidth: '300px', marginTop: '40px'}}>
                         <h5><b>Selecione as Matérias Primas necessárias</b></h5>
 
                         <div className="list-group">
@@ -507,7 +513,8 @@ const EditOrdem = () => {
                                     novoItem.QtdeDisponivel = itemEstoque.QtdeDisponivel -1;
 
                                     var sum = 0;
-                                    sum = estoqueItensUtilizado.map((a) => (sum += a.valor_venda * a.Quantidade))
+                                    [...estoqueItensUtilizado, novoItem].map((a) => (sum += a.valor_venda * a.Quantidade))
+                                    console.log('sum1', sum)
                                     setServicesSum(sum)
 
                                     return setEstoqueItensUtilizado([...estoqueItensUtilizado, novoItem])
