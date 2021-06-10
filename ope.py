@@ -231,7 +231,7 @@ def GetItems(table, id):
                 result = row
                 
         elif table == "Ordem_S":
-            sql = 'select os.id, os.detalhes, os.valorPecas, os.valorServico, os.fase, os.statusPagamento, os.responsavel_id, os.responsavel_id, Usuario.nome AS responsavelNome from OrdensdeServico AS os	LEFT JOIN Usuario ON os.responsavel_id = Usuario.Id  where os.id =  {}'.format(id)
+            sql = 'select os.id, os.detalhes, os.enderecoServico, os.valorPecas, os.valorServico, os.fase, os.statusPagamento, os.responsavel_id, os.responsavel_id, Usuario.nome AS responsavelNome from OrdensdeServico AS os	LEFT JOIN Usuario ON os.responsavel_id = Usuario.Id  where os.id =  {}'.format(id)
             query_result = engine.execute(sql)
 
             for row in query_result:
@@ -432,20 +432,20 @@ def add(table):
                 table = "Ordem_S"
                 dt = request.form['detalhes']
                 vl = request.form['valorPecas']
-                print('aaa', vl)
                 servicoExecutado = request.form['servicoExecutado']
                 vs = request.form['valorServico']
                 fs = request.form['fase']
                 st = request.form['statusPagamento']
+                enderecoServico = request.form['endereco']
                 responsavel = request.form['responsavel_id']
                 if fs == 4 or fs == '4':
                     dataexecusao = request.form['dataexe']
-                    sql = "insert into OrdensdeServico values ('{}', {}, {}, {}, {}, {}, {}, '{}')".format(
-                    dt, vl, vs, fs, st, responsavel, servicoExecutado, dataexecusao)
+                    sql = "insert into OrdensdeServico values ('{}', {}, {}, {}, {}, {}, {}, '{}', '{}')".format(
+                    dt, vl, vs, fs, st, responsavel, servicoExecutado, dataexecusao, enderecoServico)
                 else: 
                     dataexecusao = null()
-                    sql = "insert into OrdensdeServico values ('{}', {}, {}, {}, {}, {}, {}, {})".format(
-                    dt, vl, vs, fs, st, responsavel, servicoExecutado, dataexecusao)
+                    sql = "insert into OrdensdeServico values ('{}', {}, {}, {}, {}, {}, {}, {}, '{}')".format(
+                    dt, vl, vs, fs, st, responsavel, servicoExecutado, dataexecusao, enderecoServico)
                 engine.execute(sql)
                 flash('Ordem de Serviço cadastrada com sucesso.')
                 return redirect(reactPort)
@@ -521,14 +521,15 @@ def edit(table, id):
                 fs = request.form['fase']
                 st = request.form['statusPagamento']
                 re = request.form['responsavel_id']
+                enderecoServico = request.form['endereco']
                 if fs == 4 or fs == '4':
                     dataexecusao = request.form['dataexe']
-                    sql = "update OrdensdeServico set detalhes = '{}', valorPecas = {}, valorServico = {}, fase = {}, statusPagamento = {}, responsavel_id={}, dataexe = '{}' where id = {}".format(
-                    dt, vl, vs, fs, st, re, dataexecusao, id)
+                    sql = "update OrdensdeServico set detalhes = '{}', valorPecas = {}, valorServico = {}, fase = {}, statusPagamento = {}, responsavel_id={}, dataexe = '{}', enderecoServico = '{}' where id = {}".format(
+                    dt, vl, vs, fs, st, re, dataexecusao, enderecoServico, id)
                 else:
                     dataexecusao = null()
-                    sql = "update OrdensdeServico set detalhes = '{}', valorPecas = {}, valorServico = {}, fase = {}, statusPagamento = {}, responsavel_id={}, dataexe = {} where id = {}".format(
-                    dt, vl, vs, fs, st, re, dataexecusao, id)
+                    sql = "update OrdensdeServico set detalhes = '{}', valorPecas = {}, valorServico = {}, fase = {}, statusPagamento = {}, responsavel_id={}, dataexe = {}, enderecoServico = '{}' where id = {}".format(
+                    dt, vl, vs, fs, st, re, dataexecusao, enderecoServico, id)
 
                 query_result = engine.execute(sql)
                 return redirect(reactPort)

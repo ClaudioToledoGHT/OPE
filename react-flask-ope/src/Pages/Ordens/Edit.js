@@ -181,6 +181,11 @@ const EditOrdem = () => {
                             <input id='detalhes' name='detalhes' type='text' value ={item.detalhes} required="required" placeholder="Digite os detalhes da OS" size="80" className="form-control" onChange={(event) => setItem({...item, detalhes: event.target.value})} />
                         </div>
 
+                        <div className="form-group">
+                            <label>Endereço:</label>
+                            <input id='endereco' name='endereco' type='text' value ={item.enderecoServico} required="required" placeholder="Digite o endereço" size="80" className="form-control" onChange={(event) => setItem({...item, enderecoServico: event.target.value})} />
+                        </div>
+
                             <div className="form-group">
                                 <label>Preço das peças:</label>
                                 <input  type='number' step="0.01" min="0" value={servicesSum}  placeholder="Digite o valor das peças" size="80"  className="form-control" onChange={(event) => setItem({...item, valorPecas: event.target.value})} disabled/>
