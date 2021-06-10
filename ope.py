@@ -1,25 +1,31 @@
+# -*- coding: utf-8 -*-
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify, g
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
 from flask_cors import CORS
 from datetime import timedelta, datetime
+
 import urllib
-import pyodbc
+#import pyodbc
 from sqlalchemy.sql.elements import Null
 from sqlalchemy.sql.expression import null
 
 app = Flask(__name__)
-CORS(app)
-params = urllib.parse.quote_plus(
-    "DRIVER={SQL Server};SERVER=ght.database.windows.net;DATABASE=ghteam_db;UID=ghtadmin;PWD=GHT_SI4B2020")
+#CORS(app)
+#params = urllib.parse.quote_plus(
+#    "DRIVER={SQL Server};SERVER=ght.database.windows.net;DATABASE=ghteam_db;UID=ghtadmin;PWD=GHT_SI4B2020")
 db = SQLAlchemy(app)
-engine = db.create_engine("mssql+pyodbc:///?odbc_connect=%s" % params, {})
-app.config['SQLALCHEMY_DATABASE_URI'] = "mssql+pyodbc:///?odbc_connect=%s" % params
+
+engine = create_engine('mysql://bf337b8a955c3c:ea133b47@us-cdbr-east-04.cleardb.com/heroku_86cd924d26d178d')
+#engine = db.create_engine("mssql+pyodbc:///?odbc_connect=%s" % params, {})
+#app.config['SQLALCHEMY_DATABASE_URI'] = "mssql+pyodbc:///?odbc_connect=%s" % params
+
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.secret_key = "oi"
 app.permanent_session_lifetime = timedelta(minutes=120)
 app.debug = True
 
-reactPort = "http://localhost:3000"
+#reactPort = "http://localhost:3000"
 
 admin = ''
 
