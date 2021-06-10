@@ -444,7 +444,7 @@ def add(table):
                     dt, vl, vs, fs, st, responsavel, servicoExecutado, dataexecusao)
                 else: 
                     dataexecusao = null()
-                    sql = "insert into OrdensdeServico values ('{}', {}, {}, {}, {}, {}, {}, '{}')".format(
+                    sql = "insert into OrdensdeServico values ('{}', {}, {}, {}, {}, {}, {}, {})".format(
                     dt, vl, vs, fs, st, responsavel, servicoExecutado, dataexecusao)
                 engine.execute(sql)
                 flash('Ordem de Serviço cadastrada com sucesso.')
