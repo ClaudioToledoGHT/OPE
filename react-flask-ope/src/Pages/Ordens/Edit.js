@@ -9,6 +9,7 @@ const EditOrdem = () => {
     const [estoqueCopy, setEstoqueCopy] = useState([]);
     const [id, setId] = useState(null);
     const [colaboradores, setColaboradores] = useState([]);
+    const [servicesSum, setServicesSum] = useState(0);
 
     const [agendamentos, setAgendamentos] = useState([]);
 
@@ -88,9 +89,13 @@ const EditOrdem = () => {
                 })
 
                 console.log('estoque', data.result)
-
+                
                 setEstoque([...data.result])
                 setEstoqueCopy([...data.result])
+                
+                var sum = 0
+                dados.map((a) => (sum += (a.valor_venda * a.Quantidade)))
+                setServicesSum(sum)
             });
           });
 
@@ -140,8 +145,9 @@ const EditOrdem = () => {
         },
             ).then(res => res.json()).then(data => {
             console.log('response', data)
+
           });
-       
+       window.location.reload()
     }
 
     const getStatusAgendamento = (status, data) => {
@@ -158,7 +164,7 @@ const EditOrdem = () => {
     return (
             <main>
                 <div className="flex header-container">
-                    <h1 className="title">Editar - Ordem de serviço</h1>
+                    <h1 className="title">{id == null ? 'Cadastrar' : 'Editar'} - Ordem de Serviço</h1>
                 </div>
 
                 {/* action={{ '/add/Mat_P' if method == 'POST' else '/edit/Mat_P/' ~ row.id }} */}
@@ -167,43 +173,52 @@ const EditOrdem = () => {
                     method="POST" className="os-form">
 
                     <div className="os-data">
+                    <h3>Detalhes</h3>
                         <div className="form-group">
-                            <label>Detalhes:</label>
+                            <label>Solicitação:</label>
                             <input id='detalhes' name='detalhes' type='text' value ={item.detalhes} required="required" placeholder="Digite os detalhes da OS" size="80" className="form-control" onChange={(event) => setItem({...item, detalhes: event.target.value})} />
                         </div>
 
-                        <div className="form-group">
-                            <label>Preço das Peças:</label>
-                            <input id='valorPecas' name='valorPecas' type='number' step="0.01" min="0.01" value={item.valorPecas} required="required" placeholder="Digite o valor das peças" size="80"  className="form-control" onChange={(event) => setItem({...item, valorPecas: event.target.value})}/>
+                            <div className="form-group">
+                                <label>Preço das peças:</label>
+                                <input id='valorPecas' name='valorPecas' type='number' step="0.01" min="0.01" value={servicesSum} required="required" placeholder="Digite o valor das peças" size="80"  className="form-control" onChange={(event) => setItem({...item, valorPecas: event.target.value})} disabled/>
+                            </div>
+
+                            <div className="form-group">
+                                <label>Taxa de serviço:</label>
+                                <input id='valorServico' name='valorServico' type='number' step="0.01" min="0.01" value={item.valorServico} required="required" placeholder="Digite o Preço" size="80" className="form-control" onChange={(event) => setItem({...item, valorServico: event.target.value})}/>            
+                            </div>
+
+
+                            <div className="form-group">
+                                <label>Serviço executado:</label>
+                                <br/>
+                                <select name="servicoExecutado" id="servicoExecutado" className="form-select" aria-label="Default select example">
+                                    <option value={17}>1 - Instalação de rede doméstica</option>
+                                    <option value={18}>2 - Instalação de rede comercial</option>
+                                    <option value={19}>3 - Reparo geral</option>
+                                    <option value={30}>4 - Reparo de vazamento</option>
+                                </select>  
+
+
+                            <div className="form-group"  style={{width: '47%'}}>
+                                <label>Status da OS:</label>
+                                    <br/>
+                                    <select name="fase" id="fase" className="form-select" onChange={(event) => setItem({...item, fase: event.target.value})} value={item.fase} defaultValue={item.fase}>
+                                    <option value={1}>1 - Solicitada</option>
+                                    <option value={2}>2 - Agendamento</option>
+                                    <option value={3}>3 - Agendada</option>
+                                    <option value={4}>4 - Executada</option>
+
+                                </select>         
+                            </div>
                         </div>
 
-                        <div className="form-group">
-                        <label>Serivço Executado:</label>
-                            <br/>
-                            <select name="servicoExecutado" id="servicoExecutado" className="form-select">
-                            <option value={17}>1 - Instalação de rede doméstica</option>
-                            <option value={18}>2 - Instalação de rede comercial</option>
-                            <option value={19}>3 - Reparo geral</option>
-                            <option value={30}>4 - Reparo de vazamento</option>
-                        </select>         
-                        </div>
 
-                        <div className="form-group">
-                            <label>Taxa de Serviço:</label>
-                            <input id='valorServico' name='valorServico' type='number' step="0.01" min="0.01" value={item.valorServico} required="required" placeholder="Digite o Preço" size="80" className="form-control" onChange={(event) => setItem({...item, valorServico: event.target.value})}/>            
-                        </div>
+                        
 
-                        <div className="form-group">
-                        <label>Status da OS:</label>
-                            <br/>
-                            <select name="fase" id="fase" className="form-select" onChange={(event) => setItem({...item, fase: event.target.value})} value={item.fase} defaultValue={item.fase}>
-                            <option value={1}>1 - Solicitada</option>
-                            <option value={2}>2 - Agendamento</option>
-                            <option value={3}>3 - Agendada</option>
-                            <option value={4}>4 - Executada</option>
+                     
 
-                        </select>         
-                        </div>
                         
 
                         <div className="form-group">
@@ -230,7 +245,7 @@ const EditOrdem = () => {
                         </div>
 
                         <div className="form-group">
-                            <div style={{width:'100%', textAlign: 'center'}}>
+                            <div style={{width:'100%', textAlign: 'center', marginTop: '40px'}}>
                                 <button id="submit" type="submit" className="btn novo-item" style={{width: '200px'}}>Salvar</button>
                             </div>
                         </div> 
@@ -238,99 +253,97 @@ const EditOrdem = () => {
                     </div>
 
                     <div className="os-agendamentos">
-                        <h3>Agendamentos</h3>
+
+                        {id != null && <div>
                             
-                        <br/>
-                        <button className="btn novo-item" onClick={(event) => {
-                            event.preventDefault()
-
-                            setAgendamentos([...agendamentos, {inicioDateTime: new Date(), terminoDateTime: new Date()}])
-                        }}>adicionar</button>
-
-                        <br/>
-                        <br/>
-
-                        {agendamentos.map(agendamento => (
-                            <div className="form-group" key={agendamento.id}>                                
-                                
-                                {agendamento.id == null ?
-                                                            
-                                    <>
-                                        <label>Início</label>
-                                        <input  className="form-control" type="datetime-local" id="initdatetime" value={agendamento.inicioDateTime} onChange={(event) => {
-
-                                            var items = [...agendamentos];
-                                            var agenda = items.find(a => a.id == agendamento.id);
-                                            agenda.inicioDateTime = event.target.value
-                                            setAgendamentos(items)
-                                        }} />
-                                        <br/>
-                                        <label>Término</label>
-                                        <input className="form-control" defaultValue={agendamento.terminoDateTime} type="datetime-local" id="enddatetime"  value={agendamento.terminoDateTime} onChange={(event) => {
-
-                                            var items = [...agendamentos];
-                                            var agenda = items.find(a => a.id == agendamento.id);
-                                            agenda.terminoDateTime = event.target.value
-                                            setAgendamentos(items)
-                                        }} />
-                                    </>
-
-                                    :
-
-                                    <>
-                                    <div className="align-r">
-                                        <i class="fa fa-remove icon pointer" onClick={() => excluirAgendamento(agendamento)}></i>
-                                    </div>
-
-                                    <b>Data: </b><p>{agendamento.inicioDateTime.toLocaleString()}</p>
-                                    <span><b>Status: </b><p>{getStatusAgendamento(agendamento.statusAgendamento, agendamento.terminoDateTime)}</p></span>
-
-                                    </>
-                            
-                            
-                                }
-
-                                
-
-                                <br/>
-
-                                {agendamento.id == null && <button className="btn novo-item" onClick={(event) => {
-                                    event.preventDefault();
-
-                                    const body = {
-                                        "inicioDateTime": getSmallDateTimeFormat(agendamento.inicioDateTime),
-                                        "terminoDateTime": getSmallDateTimeFormat(agendamento.terminoDateTime),
-                                        "status": 0 //criado
-                                    }
-
-                                    fetch(`/api/agendamento/adicionar/ordemservico/${id}`, {
-                                        method: 'POST',
-                                        headers: {
-                                          'Accept': 'application/json',
-                                          'Content-Type': 'application/json'
-                                        },
-                                        body: JSON.stringify(body)
-                                    },
-                                        ).then(res => res.json()).then(data => {
-                                        console.log('response', data)
-                                      });
-                                }}>Cadastrar</button>}
-                                    </div> 
-                                ))}
-
-                        <br/>
-
                         
+                            <h3>Agendamentos</h3>
+                                
+                            <br/>
+                            <button className="btn novo-item-white" onClick={(event) => {
+                                event.preventDefault()
+
+                                setAgendamentos([...agendamentos, {inicioDateTime: new Date(), terminoDateTime: new Date()}])
+                            }}>adicionar</button>
+
+                            <br/>
+                            <br/>
+
+                            {agendamentos.map(agendamento => (
+                                <div className="form-group" key={agendamento.id}>                                
+                                    
+                                    {agendamento.id == null ?
+                                                                
+                                        <>
+                                            <label>Início</label>
+                                            <input  style={{width: 'auto', marginLeft: 'auto'}} className="form-control" type="datetime-local" id="initdatetime" value={agendamento.inicioDateTime} onChange={(event) => {
+
+                                                var items = [...agendamentos];
+                                                var agenda = items.find(a => a.id == agendamento.id);
+                                                agenda.inicioDateTime = event.target.value
+                                                setAgendamentos(items)
+                                            }} />
+                                            <br/>
+                                            <label>Término</label>
+                                            <input className="form-control" defaultValue={agendamento.terminoDateTime} style={{width: 'auto', marginLeft: 'auto'}} type="datetime-local" id="enddatetime"  value={agendamento.terminoDateTime} onChange={(event) => {
+
+                                                var items = [...agendamentos];
+                                                var agenda = items.find(a => a.id == agendamento.id);
+                                                agenda.terminoDateTime = event.target.value
+                                                setAgendamentos(items)
+                                            }} />
+                                        </>
+
+                                        :
+
+                                        <>
+                                    
+                                    <p><b>Data: </b>{agendamento.inicioDateTime.toLocaleString()}</p>
+                                        <p><b>Status: </b>{getStatusAgendamento(agendamento.statusAgendamento, agendamento.terminoDateTime)}</p>
+                                       {agendamento.statusAgendamento != 1 && <button className="btn cancel-button" onClick={(ev) => {
+                                           ev.preventDefault()
+                                           excluirAgendamento(agendamento)
+                                       }}>Cancelar agendamento</button>}
+
+                                        </>                                                    
+                                    }                
+
+                                    <br/>    
+
+                                    {agendamento.id == null && <button className="btn novo-item" onClick={(event) => {
+                                        event.preventDefault();
+
+                                        const body = {
+                                            "inicioDateTime": getSmallDateTimeFormat(agendamento.inicioDateTime),
+                                            "terminoDateTime": getSmallDateTimeFormat(agendamento.terminoDateTime),
+                                            "status": 0 //criado
+                                        }
+
+                                        fetch(`/api/agendamento/adicionar/ordemservico/${id}`, {
+                                            method: 'POST',
+                                            headers: {
+                                            'Accept': 'application/json',
+                                            'Content-Type': 'application/json'
+                                            },
+                                            body: JSON.stringify(body)
+                                        },
+                                            ).then(res => res.json()).then(data => {
+                                            console.log('response', data)
+                                            window.location.reload()
+                                        });
+                                    }}>Cadastrar</button>}
+                                        </div> 
+                                    ))}
+
+                            <br/>
+                        </div>}
+
                     </div>
 
 
+                    <div className="os-materiais">
 
-                    <br/>
-                    <br/>
-
-                    <div className=" os-materiais">
-
-                        <div>
+                        {id != null && <div>
                             <h3>Matérias Primas requeridas</h3>
                             <div>
                             {estoqueItensUtilizado.map((item) => (
@@ -341,6 +354,11 @@ const EditOrdem = () => {
 
                                                 var quantidadeInvalida = false;
                                                 var itensEstoque = [...estoque];
+
+                                                var sum = 0;
+                                                    sum = estoqueItensUtilizado.map((a) => (sum += a.valor_venda))
+
+                                                    console.log('sum', sum)
 
                                                 const newList = estoqueItensUtilizado.map((materia) => {
 
@@ -355,8 +373,13 @@ const EditOrdem = () => {
                                                     materia.Quantidade = materia.Quantidade +1;
                                                     materia.QtdeDisponivel = materia.QtdeDisponivel -1;
                                                     }
+
                                                     return materia;
                                                 })
+                                                var sum = 0;
+                                                sum = newList.map((a) => (sum += a.valor_venda * a.Quantidade))
+                                                setServicesSum(sum)
+                                                
                                                 if(!quantidadeInvalida){
                                                     return setEstoqueItensUtilizado([...newList])
                                                 }
@@ -399,6 +422,11 @@ const EditOrdem = () => {
                                                     console.log(itensEstoque)
                                                 // setEstoque(itensEstoque)
                                                 console.log(itensEstoque)
+                                                console.log('2222', estoqueItensUtilizado.reduce((a, b) => (a.valor_venda) + b.valor_venda))
+
+                                                    var sum = 0;
+                                                    sum = newList.map((a) => (sum += a.valor_venda * a.Quantidade))
+                                                    setServicesSum(sum)
 
                                                 return setEstoqueItensUtilizado([...newList.filter(n => n != undefined)])
                                                 }}>-</span>
@@ -408,7 +436,8 @@ const EditOrdem = () => {
                                         <div key={item?.id} className="list-group-item ml-15">
                                             <span><b>{item?.Quantidade}</b></span>
                                             <span> - </span>
-                                            <span className="ml-30">{item?.nome}</span>
+                                            <span className="ml-30">{item?.nome}&nbsp;</span>
+                                            <span className="ml-30"><b>R${(item.valor_venda * item.Quantidade).toFixed(2)}</b></span>
                                         </div>                                           
                                     </div>
                                 ))}
@@ -454,37 +483,43 @@ const EditOrdem = () => {
                                       
                                 }}>Salvar itens</button>
                             </div>
-                        </div>                        
+                        </div>   }                     
 
                     </div>
 
-                    <div className="os-materias-primas" style={{maxWidth: '300px'}}>
-                            <h5><b>Selecione as Matérias Primas necessárias</b></h5>
+                    {id != null && <div className="os-materias-primas" style={{maxWidth: '300px'}}>
+                        <h5><b>Selecione as Matérias Primas necessárias</b></h5>
 
-                            <div className="list-group">
-                                {estoque.map((item) => (
-                                    (item.show != false && <button key={item.id} type="button" className="list-group-item list-group-item-action" 
-                                    onClick={() => {
-                                        // escondendo itens selecionados da lista 
-                                        var itensEstoque = [...estoque];
-                                        var itemEstoque = itensEstoque.find((e) => e.id == item.id);
-                                        itemEstoque.show = false;
-                                        
-                                        
-                                        setEstoque(itensEstoque);
-                                        
-                                        var novoItem = {...item};
-                                        novoItem.Quantidade = 1;
-                                        novoItem.QtdeDisponivel = itemEstoque.QtdeDisponivel -1;
-                                        return setEstoqueItensUtilizado([...estoqueItensUtilizado, novoItem])
-                                    }}>
-                                        <b>{item.QtdeDisponivel}-</b>
-                                        &nbsp;
-                                        <span>{item.nome}</span>
-                                    </button>)
-                                ))}
-                            </div>
+                        <div className="list-group">
+                            {estoque.map((item) => (
+                                (item.show != false && <button key={item.id} type="button" className="list-group-item list-group-item-action" 
+                                onClick={() => {
+                                    // escondendo itens selecionados da lista 
+                                    var itensEstoque = [...estoque];
+                                    var itemEstoque = itensEstoque.find((e) => e.id == item.id);
+                                    itemEstoque.show = false;
+                                    
+                                    
+                                    setEstoque(itensEstoque);
+                                    
+                                    var novoItem = {...item};
+                                    novoItem.Quantidade = 1;
+                                    novoItem.QtdeDisponivel = itemEstoque.QtdeDisponivel -1;
+
+                                    var sum = 0;
+                                    sum = estoqueItensUtilizado.map((a) => (sum += a.valor_venda * a.Quantidade))
+                                    setServicesSum(sum)
+
+                                    return setEstoqueItensUtilizado([...estoqueItensUtilizado, novoItem])
+                                }}>
+                                    <b>{item.QtdeDisponivel}-</b>
+                                    &nbsp;
+                                    <span>{item.nome}&nbsp;</span>
+                                    <span><b>R${item.valor_venda.toFixed(2)}</b></span>
+                                </button>)
+                            ))}
                         </div>
+                    </div>}
                 </form>
 
                 

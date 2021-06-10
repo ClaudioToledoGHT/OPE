@@ -91,6 +91,8 @@ def login():
     if g.loggeduser is None:
         flash('Incorrect email or password.')
         classeFlash = 'alert alert-danger'
+        response = {}
+        return response, 404
     else:
         session['user'] = login
         print('Valor de ADM', g.loggeduser.adm)
@@ -337,7 +339,7 @@ def UpdateAgendamento(id):
 
     data = request.get_json()
     
-    sql = "update Agendamentos set InicioDateTime = '{}', TerminoDateTime = '{}', StatusAgendamento = {} where id = {}".format(data["inicioDateTime"], data["terminoDateTime"], data["statusAgendamento"], id)
+    sql = "update Agendamentos set StatusAgendamento = {} where id = {}".format(data["statusAgendamento"], id)
     print('sqlaaa')
     print(sql)
     query_result = engine.execute(sql)

@@ -26,19 +26,19 @@ const Header = () => {
                     <ul className="navbar-nav mr-auto">
 
                         <li className="nav-item">
-                            <a id="ordens" className="nav-link" href="/">Ordens de Serviço</a>
+                            <a id="ordens" className={window.location.pathname == "/" || window.location.pathname.indexOf('ordemservico') != -1 ? 'selected-menu-item nav-link' : 'nav-link'} href="/">Ordens de Serviço</a>
                         </li>
 
                         <li className="nav-item">
-                            <a id="estoque" className="nav-link" href="/Estoque">Estoque</a>
+                            <a id="estoque"  className={window.location.pathname == "/Estoque" ? 'selected-menu-item nav-link' : 'nav-link'} href="/Estoque">Estoque</a>
                         </li>
 
                         <li className="nav-item">
-                            <a id="func" className="nav-link" href="/usuarios">Colaboradores</a>
+                            <a id="func"  className={window.location.pathname.indexOf("/usuarios") != -1 ? 'selected-menu-item nav-link' : 'nav-link'} href="/usuarios">Colaboradores</a>
                         </li>
 
                         <li className="nav-item">   
-                            <a id="servicos" className="nav-link" href="/Servicos">Serviços</a>
+                            <a id="servicos"  className={window.location.pathname == "/Servicos" ? 'selected-menu-item nav-link' : 'nav-link'} href="/Servicos">Serviços</a>
                         </li>
                     
                     </ul>

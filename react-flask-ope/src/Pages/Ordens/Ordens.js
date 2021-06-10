@@ -147,7 +147,7 @@ const Ordens = () => {
 
                     <div>
                         <p>Fase</p>
-                        <select defaultValue="0" value={filtroFase} onChange={(event) => setFiltroFase(event.target.value)}>
+                        <select className="form-select" defaultValue="0" value={filtroFase} onChange={(event) => setFiltroFase(event.target.value)}>
                             <option value="0">Selecione</option>
                             <option value="1">Solicitada</option>
                             <option value="2">Aguardando Agenda</option>
@@ -158,7 +158,7 @@ const Ordens = () => {
 
                     <div>
                         <p>Pagamento</p>
-                        <select defaultValue="0" value={filtroPgto} onChange={(event) => setFiltroPgto(event.target.value)}>
+                        <select className="form-select" defaultValue="0" value={filtroPgto} onChange={(event) => setFiltroPgto(event.target.value)}>
                             <option value="0">Selecione</option>
                             <option value="1">Pendente</option>
                             <option value="2">1ª parte paga</option>
@@ -168,7 +168,7 @@ const Ordens = () => {
 
                     <div>
                         <p>Descrição</p>
-                        <input type='text' name='filtro_OS' value={filterText} onChange={(ev) => setFilterText(ev.target.value)} id='filtro_OS' placeholder='Pesquisar'/>
+                        <input className="form-control" type='text' name='filtro_OS' value={filterText} onChange={(ev) => setFilterText(ev.target.value)} id='filtro_OS' placeholder='Pesquisar'/>
                     </div>
                     
                     <button type="button" className="btn novo-item" onClick={FiltrarOrdensStatus} disabled={loading}>Filtrar</button>

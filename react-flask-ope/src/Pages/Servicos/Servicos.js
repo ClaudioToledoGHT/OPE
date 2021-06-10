@@ -48,8 +48,8 @@ const Servicos = () => {
     return (
             <main>
                 <div class="flex header-container">
-                    <h1 class="title">Servicos</h1>
-                    {isADM && <button type="button" class="btn novo-item" onClick={addFunction}>Novo item</button>}
+                    <h1 class="title">Serviços</h1>
+                    {/* {isADM && <button type="button" class="btn novo-item" onClick={addFunction}>Novo item</button>} */}
                 </div>
 
                 {error != null ? <p className="error">{error}</p>
@@ -57,18 +57,18 @@ const Servicos = () => {
                 <table class='table table-sm table-striped table-responsive-md'>
                     <thead>
                         <tr>
-                            <th scope="col">ID</th>
+                            {/* <th scope="col">ID</th> */}
                             <th scope="col">Nome</th>
                         </tr>
                     </thead>
                     <tbody>
                         {estoque.map((item) => (
                             <tr id={item.id}>
-                            <td>{item['id']}</td>
+                            {/* <td>{item['id']}</td> */}
                             <td>{item['Nome']}</td>
-                            <td>
+                            {/* <td>
                                 <i class="fa fa-edit icon pointer" onClick={() => (window.location = `http://127.0.0.1:5000/edit/Servicos/${item.id}`)}></i>
-                            </td>
+                            </td> */}
                             {/* <td>
                                 <i class="fa fa-remove icon pointer" onClick={() => deleteFunction(item.id)}></i>
                             </td> */}

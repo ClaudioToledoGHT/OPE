@@ -20,18 +20,23 @@ const Estoque = () => {
             method: 'POST',
             body: data
         }).then(res => {
-            console.log('res', res)
+            console.log('res', res.status)
             
-            if(res.status == 401)
+            if(res.status == 404){
                 setErrorText("Dados inválidos")
-            else
+                return;
+            }
+            else {
+
                 window.location = "/"
+            }
             
             return res.json()
         })
         .then(res =>{
-            localStorage.setItem('adm', res.data.permission == 'S')
-            console.log('res', res)
+            console.log('res2', res)
+            if(res != undefined)
+                localStorage.setItem('adm', res.data.permission == 'S')
         })
     }
 

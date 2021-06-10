@@ -122,28 +122,3 @@ button{
         margin-left: 10px;
     }
   }
-
-
-/* Ordens de serviço */
-.itens-ordens {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-  grid-template-areas: 'ordens-novas ordens-agendadas ordens-executadas';
-}
-
-.itens-ordens div {
-    margin-left: 5px;
-    margin-bottom: 15px;
-}
-
-.ordens-novas {
-    grid-area: ordens-novas;
-}
-
-.ordens-agendadas {
-    grid-area: ordens-agendadas;
-}
-
-.ordens-executadas {
-    grid-area: ordens-executadas;
-}
